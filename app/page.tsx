@@ -1,13 +1,13 @@
 import { theme } from "@/app/components/Styles";
 
 export default function Home() {
-  const { primaryColor, secondaryColor, neutralLight, neutralDark, neutralMuted } = theme;
+  const { primaryColor, secondaryColor, neutralLight, neutralDark, neutralMuted, borderColor } = theme;
   const white = "#ffffff";
 
   return (
     <main 
-      className="min-h-screen px-4" 
-      style={{ backgroundColor: neutralDark, color: neutralLight }}
+    className=" w-full " 
+      style={{ backgroundColor:  borderColor, color: neutralLight }}
     >
       <div className="max-w-4xl mx-auto space-y-6">
         <div>
@@ -27,7 +27,7 @@ export default function Home() {
           >
             Active Project
           </span>
-          <h2 className="text-xl font-semibold" style={{ color: neutralLight }}>
+          <h2 className="text-xl font-semibold" style={{ color:  primaryColor }}>
             Fadama & IFAD Impact Dashboard
           </h2>
         </div>

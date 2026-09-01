@@ -1,12 +1,13 @@
 import Image from "next/image";
 import { theme } from "@/app/components/Styles";
 
+
 export default function Logo() {
   const { primaryColor, secondaryColor, neutralLight, neutralDark, neutralMuted } = theme;
   const white = "#ffffff";
 
   return (
-    <div className="flex items-center space-x-2 cursor-pointer">
+    <div className="flex items-center  space-x-2 cursor-pointer">
       <div className="w-10 h-10 rounded-full overflow-hidden shadow-sm flex items-center justify-center bg-white">
         <Image 
           src="/image3.jpg"
