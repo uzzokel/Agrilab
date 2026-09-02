@@ -1,35 +1,44 @@
+"use client"; // Needs to be a client component to use useTheme
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/app/components/agribarlab/Navbar";
-import { theme } from "@/app/components/Styles";
 import ScrollToTop from "@/app/components/agribarlab/ScrollToTop"; 
-import { ThemeProvider } from "@/app/components/agribarlab/ThemeContext";
+import { ThemeProvider, useTheme } from "@/app/components/agribarlab/ThemeContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "AgriLab M&E Platform",
-  description: "Decentralized monitoring, evaluation, and impact tracking system",
-};
+// Create a inner wrapper layout component so we can use the useTheme hook inside the ThemeProvider
+function RootContent({ children }: { children: React.ReactNode }) {
+  const { currentTheme } = useTheme();
+
+  return (
+    <div 
+      className={`min-h-screen ${inter.className}`}
+      style={{ 
+        backgroundColor: currentTheme.background, 
+        color: currentTheme.text,
+        transition: "background-color 0.3s ease, color 0.3s ease" 
+      }}
+    >
+      <Navbar />
+      {children}
+      <ScrollToTop />
+    </div>
+  );
+}
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { neutralLight, neutralDark, borderColor } = theme;
-
   return (
     <html lang="en">
-      <body 
-        className={inter.className} 
-        style={{ backgroundColor: borderColor, color: neutralLight }}
-      >
+      <body>
         <ThemeProvider>
-          <Navbar />
-          {children}
-          <ScrollToTop />
+          <RootContent>{children}</RootContent>
         </ThemeProvider>
       </body>
     </html>
