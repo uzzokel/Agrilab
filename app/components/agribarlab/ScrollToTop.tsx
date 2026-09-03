@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { theme } from "@/app/components/Styles";
+import { useTheme } from "@/app/components/agribarlab/ThemeContext";
 
 export default function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
-  const { primaryColor, neutralDark, neutralLight } = theme;
+  const { currentTheme } = useTheme();
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
+      if (window.pageYOffset > 20) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -33,7 +33,7 @@ export default function ScrollToTop() {
     <button
       onClick={scrollToTop}
       className="fixed bottom-6 right-6 z-50 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
-      style={{ backgroundColor: primaryColor, color: neutralDark }}
+      style={{ backgroundColor: currentTheme.primaryColor, color: "#ffffff" }}
       aria-label="Scroll to top"
     >
       <svg

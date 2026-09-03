@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { theme } from "@/app/components/Styles";
 
-
 export default function Logo() {
   const { primaryColor, secondaryColor, neutralLight, neutralDark, neutralMuted } = theme;
   const white = "#ffffff";
