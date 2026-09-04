@@ -5,6 +5,9 @@ import Logo from "./Logo";
 import Menus from "./Menus";
 import ThemeToggle from "./ThemeToggle";
 import { theme } from "@/app/components/Styles";
+import Link from "next/link";
+import { GiFarmer } from "react-icons/gi";
+import AuthModal from "@/app/components/agribarlab/AuthModal";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -37,6 +40,7 @@ export default function Navbar() {
           <nav className="hidden lg:block">
             <Menus isScrolled={isScrolled} />
           </nav>
+           <AuthModal/>
         </div>
         {/* Theme Toggle Button Added Here */}
           <ThemeToggle />
