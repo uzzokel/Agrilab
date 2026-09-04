@@ -5,8 +5,6 @@ import Logo from "./Logo";
 import Menus from "./Menus";
 import ThemeToggle from "./ThemeToggle";
 import { theme } from "@/app/components/Styles";
-import AuthButton from "@/app/components/agribarlab/auth-button";
-import AuthModalButton from "@/app/components/agribarlab/AuthModalButton";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -39,9 +37,6 @@ export default function Navbar() {
           <nav className="hidden lg:block">
             <Menus isScrolled={isScrolled} />
           </nav>
-             <AuthButton />
-             <div className="font-bold text-lg">AgriLab</div>
-      <AuthModalButton />
         </div>
         {/* Theme Toggle Button Added Here */}
           <ThemeToggle />
