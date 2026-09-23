@@ -3,6 +3,7 @@
 import { ThemeProvider, useTheme } from "@/app/components/agribarlab/ThemeContext";
 import Navbar from "@/app/components/agribarlab/Navbar";
 import ScrollToTop from "@/app/components/agribarlab/ScrollToTop";
+import { SessionProvider } from "next-auth/react";
 
 function ThemeWrapper({ children }: { children: React.ReactNode }) {
   const { currentTheme } = useTheme();
@@ -24,8 +25,10 @@ function ThemeWrapper({ children }: { children: React.ReactNode }) {
 
 export default function ClientProviders({ children }: { children: React.ReactNode }) {
   return (
+    <SessionProvider>
     <ThemeProvider>
       <ThemeWrapper>{children}</ThemeWrapper>
     </ThemeProvider>
+    </SessionProvider>
   );
 }

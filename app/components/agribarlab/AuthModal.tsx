@@ -2,13 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useSession } from "next-auth/react";
 import LoginButton from "./LoginButton";
+import LogoutProfile from "@/app/components/agribarlab/LogoutProfile";
 import { IoClose } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { handleGoogleSignIn } from "@/app/actions/auth-actions";
 
 export default function AuthModal() {
+  const { status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
@@ -24,6 +27,17 @@ export default function AuthModal() {
     console.log({ email, password, isSignUp });
   };
 
+  // 1. If user is authenticated, render the LogoutProfile component directly in place of the login button
+  if (status === "authenticated") {
+    return <LogoutProfile />;
+  }
+
+  // 2. Handle session loading state gracefully
+  if (status === "loading") {
+    return <div className="text-xs text-slate-400">Loading...</div>;
+  }
+
+  // 3. If logged out, render the login trigger button and modal system
   return (
     <>
       {/* Use the standalone button component to trigger the modal */}
