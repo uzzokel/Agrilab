@@ -3,11 +3,19 @@
 import { useState, useRef, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { FiLogOut, FiUser, FiSettings } from "react-icons/fi";
+import Link from "next/link";
 
 export default function LogoutProfile() {
   const { data: session, status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // DEBUG: Check your browser console (F12) to see what session data contains
+  useEffect(() => {
+    if (session) {
+      console.log("FULL SESSION DATA:", session);
+    }
+  }, [session]);
 
   // Close dropdown if user clicks outside of it
   useEffect(() => {
@@ -35,6 +43,7 @@ export default function LogoutProfile() {
           <img
             src={session.user.image || "https://via.placeholder.com/150"}
             alt={session.user.name || "User profile"}
+            referrerPolicy="no-referrer"
             className="w-10 h-10 rounded-full border-2 border-green-600 object-cover shadow-sm"
           />
         </button>
@@ -55,15 +64,23 @@ export default function LogoutProfile() {
 
             {/* Menu Options */}
             <div className="py-2 px-2 space-y-1">
-              <div className="flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer">
+              <Link 
+                href="/profile" 
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+              >
                 <FiUser size={16} className="text-slate-400" />
                 Manage Profile
-              </div>
+              </Link>
 
-              <div className="flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer">
+              <Link 
+                href="/settings" 
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+              >
                 <FiSettings size={16} className="text-slate-400" />
                 Account Settings
-              </div>
+              </Link>
             </div>
 
             {/* Sign Out Action */}

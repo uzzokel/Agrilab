@@ -10,7 +10,10 @@ interface MenusProps {
 
 const menuItems = [
   { label: "Home", path: "/" },
-  { label: "Features", path: "/services" },
+  { label: "Services", path: "/services" },
+  { label: "Features", path: "/features" },
+  { label: "Projects", path: "/projects" },
+  { label: "Dashboard", path: "/dashboard" },
   { label: "About", path: "/about" },
   { label: "Blog", path: "/blog" },
 ];
