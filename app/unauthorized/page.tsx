@@ -1,6 +1,6 @@
 export default function UnauthorizedPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4 py-12">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-400 px-4 py-12">
       <div className="w-full max-w-md space-y-6 rounded-xl bg-white p-8 shadow-lg text-center">
         <div>
           <span className="inline-block rounded-full bg-amber-100 p-3 text-amber-600 mb-3">
