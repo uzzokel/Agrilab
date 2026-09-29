@@ -8,10 +8,16 @@ import { theme } from "@/app/components/Styles";
 import Link from "next/link";
 import { GiFarmer } from "react-icons/gi";
 import AuthModal from "@/app/components/agribarlab/AuthModal";
+import { useSession } from "next-auth/react";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { neutralLight, neutralDark, borderColor } = theme;
+  const { data: session } = useSession();
+
+  // Check if the current logged-in user is the admin
+  const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL || "uzzokel@gmail.com";
+  const isAdmin = session?.user?.email === adminEmail;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,10 +46,21 @@ export default function Navbar() {
           <nav className="hidden lg:block">
             <Menus isScrolled={isScrolled} />
           </nav>
-           <AuthModal/>
+          
+          {/* Conditionally show Admin Panel Button only for Admin */}
+          {isAdmin && (
+            <Link
+              href="/admin"
+              className="bg-amber-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-amber-600 transition shadow-xs flex items-center gap-1"
+            >
+              Admin Panel
+            </Link>
+          )}
+
+          <AuthModal />
         </div>
         {/* Theme Toggle Button Added Here */}
-          <ThemeToggle />
+        <ThemeToggle />
       </div>
     </header>
   );

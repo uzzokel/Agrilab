@@ -1,25 +1,61 @@
+import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function proxy(request: NextRequest) {
-  // Check for the Auth.js / NextAuth session cookie
-  // (Auth.js typically uses __Secure-authjs.session-token or next-auth.session-token)
-  const sessionToken = 
-    request.cookies.get("authjs.session-token")?.value ||
-    request.cookies.get("__Secure-authjs.session-token")?.value ||
-    request.cookies.get("next-auth.session-token")?.value ||
-    request.cookies.get("__Secure-next-auth.session-token")?.value;
+export default auth((req: NextRequest & { auth?: any }) => {
+  const isLoggedIn = !!req.auth;
+  const user = req.auth?.user;
+  
+  const path = req.nextUrl.pathname;
+  const isProtected = path.startsWith("/dashboard") || path.startsWith("/blog") || path.startsWith("/features") || path.startsWith("/admin");
+  const isRegisterPage = path.startsWith("/register-agri");
+  const isPendingPage = path.startsWith("/pending-approval");
+  const isLoginPage = path.startsWith("/login-agri");
 
-  // If there's no session cookie, redirect them to the unauthorized notice page
-  if (!sessionToken) {
-    const url = request.nextUrl.clone();
+  // Admin Bypass: If user is the designated admin, let them access anything freely!
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const isAdmin = user?.email && adminEmail && user.email === adminEmail;
+
+  if (isAdmin) {
+    return NextResponse.next();
+  }
+
+  // 1. Unauthenticated users trying to hit protected routes
+  if (isProtected && !isLoggedIn) {
+    const url = req.nextUrl.clone();
     url.pathname = "/unauthorized";
     return NextResponse.redirect(url);
   }
 
+  // 2. Standard user routing checks
+  if (isLoggedIn) {
+    const status = user?.status; 
+
+    if ((!status || status === "UNREGISTERED") && !isRegisterPage) {
+      return NextResponse.redirect(new URL("/register-agri", req.url));
+    }
+
+    if (status === "PENDING" && !isPendingPage) {
+      return NextResponse.redirect(new URL("/pending-approval", req.url));
+    }
+
+    if (status === "APPROVED" && (isLoginPage || isRegisterPage)) {
+      return NextResponse.redirect(new URL("/features", req.url));
+    }
+  }
+
   return NextResponse.next();
-}
+});
 
 export const config = {
-  matcher: ["/features", "/blog", "/dashboard/:path*"],
+  matcher: [
+    "/",
+    "/features", 
+    "/blog", 
+    "/admin/:path*",
+    "/dashboard/:path*", 
+    "/register-agri", 
+    "/pending-approval",
+    "/login-agri"
+  ],
 };
