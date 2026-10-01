@@ -14,13 +14,14 @@ model User {
   id            String    @id @default(uuid())
   name          String?
   email         String?   @unique
-  emailVerified DateTime? // <-- Add this line
+  password      String?   // <-- ADDED THIS LINE for email/password authentication
+  emailVerified DateTime? 
   image         String?
   state         String?
   designation   String?
   pin           String?
   username      String?   @unique
-  status        String?   @default("UNREGISTERED") // <-- Explicit default
+  status        String?   @default("UNREGISTERED") 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   accounts      Account[]
